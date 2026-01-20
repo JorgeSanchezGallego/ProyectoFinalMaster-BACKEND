@@ -4,7 +4,7 @@
   "description": "api backend",
   "repository": {
     "type": "git",
-    "url": "undefined"
+    "url": "https://github.com/JorgeSanchezGallego/ProyectoFinalMaster-BACKEND"
   },
   "license": "ISC",
   "author": "Jorge Sánchez",
@@ -15,16 +15,18 @@
     "dev": "nodemon index.js",
     "usSeed": "node ./src/seeds/users.seed.js",
     "prdctSeed": "node ./src/seeds/products.seed.js",
-    "allSeeds": "npm run usSeed && npm run prdctSeed",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "allSeeds": "npm run usSeed && npm run prdctSeed"
   },
   "dependencies": {
     "bcrypt": "^6.0.0",
+    "cloudinary": "^1.41.3",
     "cors": "^2.8.5",
     "csv-parser": "^3.2.0",
     "dotenv": "^17.2.3",
     "express": "^5.2.1",
-    "mongoose": "^9.1.4"
+    "mongoose": "^9.1.4",
+    "multer": "^2.0.2",
+    "multer-storage-cloudinary": "^4.0.0"
   },
   "devDependencies": {
     "nodemon": "^3.1.11"

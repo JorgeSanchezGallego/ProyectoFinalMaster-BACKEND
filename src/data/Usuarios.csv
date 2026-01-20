@@ -1,0 +1,4 @@
+nombre,email,password,role
+Jorge,encargado@test.com,12345678,encargado
+Eugenio,camarero@test.com,12345678,trabajador
+Juanito,comercial@test.com,12345678,comercial

@@ -62,7 +62,7 @@ const deleteProduct = async (req,res) => {
         }
         deleteImgCloudinary(deleted.img)
         return res.status(200).json({mensaje: "Producto borrado", producto: deleted})
-    } catch {
+    } catch (error){
         return res.status(404).json({error: "Error al eliminar producto", detalle: error.message})
 }
 }

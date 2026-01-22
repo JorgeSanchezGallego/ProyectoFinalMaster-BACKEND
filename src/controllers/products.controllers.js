@@ -73,9 +73,31 @@ const searchProductByName = async (req, res) => {
         if (!nombre) {
             return res.status(400).json({error: "Debes indicar el nombre"})
         }
-        const producto = await Producto.find({nombre: new RegExp(nombre, "i")})
-        res.status(200).json(producto)
+        const productos = await Producto.find({nombre: new RegExp(nombre, "i")})
+        res.status(200).json(productos)
     } catch (error) {
         res.status(500).json({error: "Error al buscar productos", detalles: error.message})
     }
+}
+
+const searchProductsByCategory = async (req, res) => {
+    try {
+        const {categoria} = req.query
+        if (!categoria){
+            return res.status(400).json({error: "Debes indicar una categoria valida"})
+        }
+        const productos = await Producto.find({categoria: new RegExp(categoria, "i")})
+        res.status(200).json(productos)
+    } catch (error) {
+        res.status(500).json({error: "Error al buscar productos", detalle: error.message})
+    }
+}
+
+module.exports = {
+    getProducts,
+    createProduct,
+    updateProduct,
+    deleteProduct,
+    searchProductByName,
+    searchProductsByCategory
 }

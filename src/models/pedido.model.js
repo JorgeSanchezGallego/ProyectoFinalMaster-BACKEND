@@ -44,16 +44,16 @@ const pedidoSchema = new mongoose.Schema(
     }
 )
 
-pedidoSchema.pre('save', function (next) {
+pedidoSchema.pre('save', function () {
     if (!this.products || this.products.length === 0) {
         this.total = 0
-        return next()
+        return 
     }
     this.total = this.products.reduce((acc, item) => {
         return acc + (item.price * item.quantity)
     }, 0)
     this.total = Math.round(this.total * 100) / 100;
-    next()
+    
 })
 
 const Pedido = mongoose.model('Pedido', pedidoSchema)

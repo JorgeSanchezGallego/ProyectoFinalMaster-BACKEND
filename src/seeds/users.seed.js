@@ -4,6 +4,18 @@ const dotenv = require('dotenv')
 dotenv.config()
 const {leerCSV} = require('../utils/csvReader')
 
+/**
+ * Script de automatización para la carga inicial de usuarios (Seeding).
+ * * Acciones realizadas:
+ * 1. Conexión a MongoDB.
+ * 2. Limpieza de la colección de usuarios.
+ * 3. Lectura de datos desde "Usuarios.csv".
+ * 4. Creación individual de usuarios para disparar middlewares de encriptación.
+ * 5. Cierre de conexión.
+ * * @async
+ * @function seedUsers
+ * @returns {Promise<void>}
+ */
 const seedUsers = async () => {
     try {
         await mongoose.connect(process.env.DB_URL)

@@ -3,6 +3,18 @@ const bcrypt = require('bcrypt')
 const {generateToken} = require('../utils/token')
 const {deleteImgCloudinary} = require('../utils/cloudinary.utils')
 
+
+/**
+ * Registra un nuevo usuario en el sistema.
+ * Verifica si el email ya existe y gestiona la subida de la imagen de perfil a Cloudinary.
+ * En caso de error o usuario duplicado, elimina la imagen subida para evitar huérfanos.
+ * @async
+ * @param {Object} req - Objeto de petición de Express.
+ * @param {Object} req.body - Datos del usuario (nombre, email, password, role).
+ * @param {Object} [req.file] - Archivo de imagen opcional gestionado por Multer.
+ * @param {Object} res - Objeto de respuesta de Express.
+ * @returns {Promise<void>} Respuesta 201 con el usuario creado o 400 si hay error.
+ */
 const registerUser = async (req, res) => {
     try {
         const user = new User(req.body)
@@ -27,6 +39,15 @@ const registerUser = async (req, res) => {
     }
 }
 
+/**
+ * Autentificación de un usuario y genera un token de acceso.
+ * Compara la contraseña proporcionada con el hash almacenado en la base de datos.
+ * @async
+ * @param {Object} req - Objeto de petición de Express.
+ * @param {Object} req.body - Credenciales del usuario (email, password).
+ * @param {Object} res - Objeto de respuesta de Express.
+ * @returns {Promise<void>} Respuesta 200 con el token y datos del usuario, o 400 si fallan las credenciales.
+ */
 const loginUser = async (req,res) => {
     try {
         const { email, password} = req.body

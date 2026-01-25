@@ -1,5 +1,19 @@
 const mongoose = require("mongoose")
 
+
+/**
+ * Esquema de Mongoose para la colección de Pedidos.
+ * Gestiona la compra de productos por parte de los usuarios, manteniendo un registro
+ * del precio histórico en el momento de la compra y calculando el total automáticamente.
+ * * @typedef {Object} Pedido
+ * @property {mongoose.Types.ObjectId} user - Referencia al usuario que realiza el pedido (Colección User).
+ * @property {Array<Object>} products - Lista de productos incluidos.
+ * @property {mongoose.Types.ObjectId} products.product - Referencia al producto (Colección Producto).
+ * @property {number} products.quantity - Cantidad de unidades (Mínimo 1).
+ * @property {number} products.price - Precio unitario capturado al momento del pedido.
+ * @property {number} total - Suma total del pedido, calculada automáticamente.
+ * @property {string} status - Estado actual (pendiente, entregado, cancelado).
+ */
 const pedidoSchema = new mongoose.Schema(
     {
         user: {
@@ -44,6 +58,11 @@ const pedidoSchema = new mongoose.Schema(
     }
 )
 
+/**
+ * Middleware 'pre-save'.
+ * Calcula automáticamente el total del pedido sumando el (precio * cantidad) de cada producto.
+ * Redondea el resultado a dos decimales para evitar errores de precisión de punto flotante.
+ */
 pedidoSchema.pre('save', function () {
     if (!this.products || this.products.length === 0) {
         this.total = 0

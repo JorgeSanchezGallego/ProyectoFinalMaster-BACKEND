@@ -1,6 +1,18 @@
 const Pedido = require('../models/pedido.model')
 const Producto = require('../models/product.model')
 
+
+/**
+ * Crea un nuevo pedido en el sistema.
+ * Valida la existencia de los productos, asigna sus precios actuales desde la base de datos 
+ * para evitar manipulaciones y calcula el total automáticamente.
+ * * @async
+ * @param {Object} req - Objeto de petición de Express. 
+ * @param {Object} req.body - Contiene el array de productos ({product: id, quantity: number}).
+ * @param {Object} req.user - Usuario autenticado obtenido del middleware isAuth.
+ * @param {Object} res - Objeto de respuesta de Express.
+ * @returns {Promise<void>} Envía una respuesta 201 con el pedido creado o 500 si hay un error.
+ */
 const createPedido = async (req, res) => {
     try {
         const { products } = req.body
@@ -30,6 +42,15 @@ const createPedido = async (req, res) => {
     }
 }
 
+/**
+ * Obtiene el historial de pedidos del usuario autenticado.
+ * Los pedidos se devuelven ordenados por fecha de creación descendente.
+ * * @async
+ * @param {Object} req - Objeto de petición de Express.
+ * @param {Object} req.user - Usuario autenticado (proporcionado por el middleware).
+ * @param {Object} res - Objeto de respuesta de Express.
+ * @returns {Promise<void>} Envía una respuesta 200 con el array de pedidos o 500 si falla.
+ */
 const getPedidos = async (req,res) => {
     try {
         const pedidos = await Pedido.find({user: req.user._id}).populate('products.product').sort({createdAt: -1})

@@ -1,6 +1,14 @@
 const Producto = require('../models/product.model')
 const { deleteImgCloudinary} = require('../utils/cloudinary.utils')
 
+
+/**
+ * Obtiene la lista completa de productos de la base de datos.
+ * @async
+ * @param {Object} req - Objeto de petición de Express.
+ * @param {Object} res - Objeto de respuesta de Express.
+ * @returns {Promise<void>} Respuesta con el array de productos o error 500.
+ */
 const getProducts = async (req, res) => {
     try {
         const productos = await Producto.find()
@@ -10,6 +18,15 @@ const getProducts = async (req, res) => {
     }
 }
 
+/**
+ * Crea un nuevo producto y sube su imagen a Cloudinary.
+ * @async
+ * @param {Object} req - Objeto de petición de Express.
+ * @param {Object} req.body - Datos del producto (nombre, precio, etc.).
+ * @param {Object} req.file - Archivo de imagen gestionado por Multer.
+ * @param {Object} res - Objeto de respuesta de Express.
+ * @returns {Promise<void>} Producto creado o error (con limpieza de imagen en Cloudinary si falla).
+ */
 const createProduct = async (req, res) => {
     try {
         const newProduct = new Producto(req.body)
@@ -31,6 +48,16 @@ const createProduct = async (req, res) => {
     }
 }
 
+/**
+ * Actualiza los datos de un producto existente.
+ * Si se sube una nueva imagen, elimina la anterior de Cloudinary.
+ * @async
+ * @param {Object} req - Objeto de petición.
+ * @param {string} req.params.id - ID del producto a actualizar.
+ * @param {Object} req.file - Nueva imagen opcional.
+ * @param {Object} res - Objeto de respuesta.
+ * @returns {Promise<void>}
+ */
 const updateProduct = async (req,res) => {
     try {
         const {id} = req.params
@@ -53,6 +80,14 @@ const updateProduct = async (req,res) => {
     }
 }
 
+/**
+ * Elimina un producto de la base de datos y su imagen de Cloudinary.
+ * @async
+ * @param {Object} req - Objeto de petición.
+ * @param {string} req.params.id - ID del producto a eliminar.
+ * @param {Object} res - Objeto de respuesta.
+ * @returns {Promise<void>}
+ */
 const deleteProduct = async (req,res) => {
     try{
         const {id} = req.params
@@ -67,6 +102,14 @@ const deleteProduct = async (req,res) => {
 }
 }
 
+/**
+ * Busca productos cuyo nombre coincida parcialmente con el término proporcionado.
+ * @async
+ * @param {Object} req - Objeto de petición.
+ * @param {string} req.params.nombre - Término de búsqueda.
+ * @param {Object} res - Objeto de respuesta.
+ * @returns {Promise<void>}
+ */
 const searchProductByName = async (req, res) => {
     try {
         const { nombre} = req.params
@@ -80,6 +123,14 @@ const searchProductByName = async (req, res) => {
     }
 }
 
+/**
+ * Filtra productos por categoría exacta o parcial.
+ * @async
+ * @param {Object} req - Objeto de petición.
+ * @param {string} req.params.categoria - Categoría a filtrar (Bebidas, Comida, Limpieza).
+ * @param {Object} res - Objeto de respuesta.
+ * @returns {Promise<void>}
+ */
 const searchProductsByCategory = async (req, res) => {
     try {
         const {categoria} = req.params

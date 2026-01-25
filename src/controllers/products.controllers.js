@@ -69,7 +69,7 @@ const deleteProduct = async (req,res) => {
 
 const searchProductByName = async (req, res) => {
     try {
-        const { nombre} = req.query
+        const { nombre} = req.params
         if (!nombre) {
             return res.status(400).json({error: "Debes indicar el nombre"})
         }
@@ -82,7 +82,7 @@ const searchProductByName = async (req, res) => {
 
 const searchProductsByCategory = async (req, res) => {
     try {
-        const {categoria} = req.query
+        const {categoria} = req.params
         if (!categoria){
             return res.status(400).json({error: "Debes indicar una categoria valida"})
         }

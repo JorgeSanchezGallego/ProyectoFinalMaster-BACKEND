@@ -12,29 +12,29 @@ const mongoose = require("mongoose")
  */
 const productoSchema = new mongoose.Schema(
     {
-        nombre: {type: String, required: true, trim:true},
+        nombre: {type: String, required: true, trim:true}, //Trim quita espacios delante y detras, required lo hace obligatorio
         distribuidor: {
             type: String,
             required: true,
-            enum: ["Makro", "Comcarcia", "Coca cola", "Fruteria Pepe"],
+            enum: ["Makro", "Comcarcia", "Coca cola", "Fruteria Pepe"], //Solo puede ser uno de estos
             trim: true
         },
         img: {
             type: String,
-            required: true,
-            default: "https://cdn-icons-png.flaticon.com/512/2927/2927347.png" 
+            required: true, //Imagen del producto requerida
+            default: "https://cdn-icons-png.flaticon.com/512/2927/2927347.png" //Si pasa algo al subir la imagen y se rompe, imagen default
         },
-        precio: {type: Number, required: true, min: 0},
+        precio: {type: Number, required: true, min: 0}, //Vigilamos que sea obligatorio y que no pueda ser negativo
         categoria: {
             type: String,
             required: true,
-            enum: ["Bebidas", "Comida", "Limpieza"],
+            enum: ["Bebidas", "Comida", "Limpieza"], //Solo estas categorias disponibles
             trim: true
         }
     },
     {
-        timestamps: true,
-        versionKey: false
+        timestamps: true, //Crea campos createdAt y updatedAt
+        versionKey: false //Elimina el campo __v interno de mongo
     }
 )
 

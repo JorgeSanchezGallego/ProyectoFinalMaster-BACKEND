@@ -17,24 +17,24 @@ dotenv.config()
  * @function seedProducts
  * @returns {Promise<void>}
  */
-const seedProducts = async () => {
+const seedProducts = async () => { //Función asincrona
     try {
-        await mongoose.connect(process.env.DB_URL)
-        console.log("Conectado a la BBDD");
-        await Producto.deleteMany({})
-        console.log("Productos borrados");
-        const productosData = await leerCSV("Productos.csv")
-        const productosFormateados = productosData.map(p => ({
-            ...p,
-            precio: parseFloat(p.precio)
+        await mongoose.connect(process.env.DB_URL) //Hasta que no conecte con la DB no continua
+        console.log("Conectado a la BBDD"); //Mensaje de éxito
+        await Producto.deleteMany({}) //Hasta que no borre la DB de productos no continua
+        console.log("Productos borrados"); //Mensaje de éxito
+        const productosData = await leerCSV("Productos.csv") //Declaramos nuestros productos y llamamos a nuestra funcion leerCSV que necesita un CSV
+        const productosFormateados = productosData.map(p => ({ //Mapeamos cada producto ya que el precio viene como string, y lo necesitamos como number para poder hacer calculos
+            ...p, //Nos quedamos con todo el producto
+            precio: parseFloat(p.precio) //Pero en precio, parseamos
         }))
-        await Producto.insertMany(productosFormateados)
-        console.log(`Cantidad de productos insertados: ${productosFormateados.length}`);
+        await Producto.insertMany(productosFormateados) //Guardamos todos los productos nuevos
+        console.log(`Cantidad de productos insertados: ${productosFormateados.length}`); //Mensaje de éxito 
     } catch (error) {
         console.error('Error', error);
     } finally {
-        mongoose.disconnect()
+        mongoose.disconnect() //Nos desconectamos de mongoose
     }
 }
 
-seedProducts()
+seedProducts() //Llamamos a la función

@@ -16,7 +16,7 @@ const { subidaProductos} = require('../middlewares/file')
  * y la modificación (CRUD) solo a usuarios con rol 'comercial'.
  * @module routes/products
  */
-const router = express.Router()
+const router = express.Router() //Nos traemos el enrutador
 
 /**
  * Obtener todos los productos.
@@ -24,7 +24,7 @@ const router = express.Router()
  * @route {GET} /
  * @authentication Requiere isAuth.
  */
-router.get('/', [isAuth], getProducts)
+router.get('/', [isAuth], getProducts) //Para poder ver los productos, simplemente con estar registrado sirve
 /**
  * Buscar productos por nombre.
  * @name get/name/:nombre
@@ -32,7 +32,7 @@ router.get('/', [isAuth], getProducts)
  * @param {string} nombre - Parte del nombre del producto a buscar.
  * @authentication Requiere isAuth.
  */
-router.get('/name/:nombre', [isAuth], searchProductByName)
+router.get('/name/:nombre', [isAuth], searchProductByName)//Para poder hacer busquedas, con estar registrado sobra
 /**
  * Filtrar productos por categoría.
  * @name get/category/:categoria
@@ -40,7 +40,7 @@ router.get('/name/:nombre', [isAuth], searchProductByName)
  * @param {string} categoria - Nombre de la categoría (Bebidas, Comida, Limpieza).
  * @authentication Requiere isAuth.
  */
-router.get('/category/:categoria', [isAuth], searchProductsByCategory)
+router.get('/category/:categoria', [isAuth], searchProductsByCategory)//Para poder hacer busquedas, con estar registrado sobra
 
 
 /**
@@ -50,7 +50,7 @@ router.get('/category/:categoria', [isAuth], searchProductsByCategory)
  * @authentication Requiere isAuth e isSupplier.
  * @bodyparam {File} img - Imagen del producto (campo 'img').
  */
-router.post('/', [isAuth, isSupplier, subidaProductos.single('img')], createProduct)
+router.post('/', [isAuth, isSupplier, subidaProductos.single('img')], createProduct) //Para subir productos nuevos, solo el comercial puede subir productos, y deben llevar foto
 /**
  * Actualizar un producto existente por su ID.
  * @name patch/:id
@@ -58,7 +58,7 @@ router.post('/', [isAuth, isSupplier, subidaProductos.single('img')], createProd
  * @param {string} id - ID de MongoDB del producto.
  * @authentication Requiere isAuth e isSupplier.
  */
-router.patch('/:id', [isAuth, isSupplier, subidaProductos.single('img')], updateProduct)
+router.patch('/:id', [isAuth, isSupplier, subidaProductos.single('img')], updateProduct)//Para actualizar productos, solo el comercial puede actualizar productos
 /**
  * Eliminar un producto por su ID.
  * @name delete/:id
@@ -66,6 +66,6 @@ router.patch('/:id', [isAuth, isSupplier, subidaProductos.single('img')], update
  * @param {string} id - ID de MongoDB del producto.
  * @authentication Requiere isAuth e isSupplier.
  */
-router.delete('/:id', [isAuth, isSupplier], deleteProduct)
+router.delete('/:id', [isAuth, isSupplier], deleteProduct)//Para borrar productos, solo el comercial puede borrarlos
 
 module.exports = router

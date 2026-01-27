@@ -17,37 +17,37 @@ const mongoose = require("mongoose")
 const pedidoSchema = new mongoose.Schema(
     {
         user: {
-            type: mongoose.Schema.Types.ObjectId,
+            type: mongoose.Schema.Types.ObjectId, //Guardamos un id de usuario relacionado
             ref: 'User',
             required: true
         },
         products: [
             {
                 product: {
-                    type: mongoose.Schema.Types.ObjectId,
+                    type: mongoose.Schema.Types.ObjectId, //Guardamos un producto que apunta al id del producto
                     ref: 'Producto',
                     required: true
                 }
                 ,
                 quantity: {
-                    type: Number,
+                    type: Number, //Guardamos la cantidad de ese producto para luego realizar calculos de precio total
                     required: true,
                     min: 1
                 },
                 price: {
-                    type: Number,
+                    type: Number, //Pedimos precio, aunque luego el precio lo actualizaremos al precio de la DB
                     required: true,
                     min: 0
                 }
             }
         ],
         total: {
-            type: Number,
+            type: Number, //Precio total
             required: true,
             default: 0
         },
         status: {
-            type: String,
+            type: String, //Estado del pedido
             enum: ['pendiente', 'entregado', 'cancelado'],
             default: 'pendiente'
         }
@@ -63,15 +63,15 @@ const pedidoSchema = new mongoose.Schema(
  * Calcula automáticamente el total del pedido sumando el (precio * cantidad) de cada producto.
  * Redondea el resultado a dos decimales para evitar errores de precisión de punto flotante.
  */
-pedidoSchema.pre('save', function () {
-    if (!this.products || this.products.length === 0) {
+pedidoSchema.pre('save', function () { //Se ejecuta antes del guardado en la DB
+    if (!this.products || this.products.length === 0) { //Si el pedido esta vacio, no hace nada
         this.total = 0
         return 
     }
-    this.total = this.products.reduce((acc, item) => {
+    this.total = this.products.reduce((acc, item) => { // Usamos reduce para calcular el total que será, el acc + (precio del producto * la cantidad)
         return acc + (item.price * item.quantity)
     }, 0)
-    this.total = Math.round(this.total * 100) / 100;
+    this.total = Math.round(this.total * 100) / 100; //Redondeamos el precio total 
     
 })
 

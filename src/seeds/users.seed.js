@@ -18,20 +18,20 @@ const {leerCSV} = require('../utils/csvReader')
  */
 const seedUsers = async () => {
     try {
-        await mongoose.connect(process.env.DB_URL)
-        console.log("Conectado a la BBDD");
-        await User.deleteMany({})
-        console.log("Usuarios borrados");
-        const usuariosData = await leerCSV("Usuarios.csv")
+        await mongoose.connect(process.env.DB_URL)//Hasta que no conecte con la DB no continua
+        console.log("Conectado a la BBDD");//Mensaje de éxito
+        await User.deleteMany({})//Hasta que no borre la DB de productos no continua
+        console.log("Usuarios borrados");//Mensaje de éxito
+        const usuariosData = await leerCSV("Usuarios.csv")//Declaramos nuestros productos y llamamos a nuestra funcion leerCSV que necesita un CSV
         for (const user of usuariosData) {
-            await User.create(user)
+            await User.create(user) //Forof para recorrer cada usuario y poder encriptar la contraseña y los creamos uno a uno
         }
-        console.log(`Numero de usuarios registrados: ${usuariosData.length}`);
+        console.log(`Numero de usuarios registrados: ${usuariosData.length}`);//Mensaje de éxito
     } catch (error) {
         console.error('Error: ' + error)
     } finally {
-        mongoose.disconnect()
+        mongoose.disconnect()//Nos desconectamos de mongoose
     }
 }
 
-seedUsers()
+seedUsers()//Llamamos a la función

@@ -14,26 +14,26 @@ const bcrypt = require("bcrypt")
  */
 const userSchema = new mongoose.Schema(
     {
-        nombre: {type: String, required: true, trim: true},
-        email: {type: String, required: true, trim: true, unique: true},
+        nombre: {type: String, required: true, trim: true}, //Nombre requerido y sin espacios delante ni detras
+        email: {type: String, required: true, trim: true, unique: true}, //Hacemos email unique para poder hacer comprobaciones de usuarios existentes
         password: {
             type: String,
             trim: true,
             required: true,
-            minlength: [8, "La contraseña debe tener al menos8 caracteres"]
+            minlength: [8, "La contraseña debe tener al menos 8 caracteres"] //Requerimiento minimo para la contraseña
         },
         role: {
             type: String,
-            enum: ["encargado", "trabajador", "comercial"],
+            enum: ["encargado", "trabajador", "comercial"], //Solo estos roles disponibles
             default: "trabajador"
         },
         img : {
-            type: String
+            type: String //No obligotaria
         }
     },
     {
-        timestamps: true,
-        versionKey: false
+        timestamps: true, //Crea campos createdAt y updatedAt
+        versionKey: false //Elimina el campo __v interno de mongo
     }
 )
 
@@ -45,12 +45,12 @@ const userSchema = new mongoose.Schema(
  * * @async
  * @returns {Promise<void>}
  */
-userSchema.pre("save", async function () {
-    if (!this.isModified("password")) {
+userSchema.pre("save", async function () { //Se ejecuta antes de guardar, usamos function por que necesitamos acceder a this.
+    if (!this.isModified("password")) { //Si la contraseña no ha sido modificada, salimos 
         return
     }
     try {
-        this.password = await bcrypt.hash(this.password, 10)
+        this.password = await bcrypt.hash(this.password, 10) //Si la contraseña es nueva, la encriptamos
     } catch (error) {
         console.log(error);
         

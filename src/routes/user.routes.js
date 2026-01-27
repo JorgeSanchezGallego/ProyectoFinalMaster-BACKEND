@@ -7,7 +7,7 @@ const {subidaUsuarios} = require('../middlewares/file')
  * Gestiona los endpoints públicos para el acceso al sistema: registro e inicio de sesión.
  * @module routes/users
  */
-const router = express.Router()
+const router = express.Router()//Nos traemos el enrutador
 
 /**
  * Registro de nuevo usuario.
@@ -19,7 +19,7 @@ const router = express.Router()
  * @bodyparam {string} password - Contraseña (mínimo 8 caracteres).
  * @bodyparam {File} [img] - Imagen de perfil (campo 'img').
  */
-router.post('/register', subidaUsuarios.single('img'), registerUser)
+router.post('/register', subidaUsuarios.single('img'), registerUser) //Ruta para el registro, preparando la posible subida de imagen
 /**
  * Inicio de sesión de usuario.
  * Valida credenciales y devuelve un token JWT para autenticación futura.
@@ -28,6 +28,6 @@ router.post('/register', subidaUsuarios.single('img'), registerUser)
  * @bodyparam {string} email - Correo electrónico del usuario.
  * @bodyparam {string} password - Contraseña del usuario.
  */
-router.post('/login', loginUser)
+router.post('/login', loginUser) //Ruta para el login
 
 module.exports = router

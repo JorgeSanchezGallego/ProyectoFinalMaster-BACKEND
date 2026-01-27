@@ -8,7 +8,7 @@ const {isAuth, isManager} = require('../middlewares/auth.middleware')
  * Todas las rutas de este enrutador requieren autenticación previa.
  * @module routes/pedidos
  */
-const router = express.Router()
+const router = express.Router() //Nos traemos el enrutador
 
 /**
  * Ruta para realizar un nuevo pedido.
@@ -17,7 +17,7 @@ const router = express.Router()
  * @route {POST} /pedido
  * @authentication Requiere isAuth e isManager.
  */
-router.post('/pedido', [isAuth, isManager], createPedido)
+router.post('/pedido', [isAuth, isManager], createPedido) //Endpoint para realizar un pedido, solo accesible para el manager a traves de middlewares
 /**
  * Ruta para obtener el historial de pedidos del usuario.
  * Requiere un token válido y rol de 'encargado'.
@@ -25,6 +25,6 @@ router.post('/pedido', [isAuth, isManager], createPedido)
  * @route {GET} /historial
  * @authentication Requiere isAuth e isManager.
  */
-router.get('/historial', [isAuth, isManager], getPedidos)
+router.get('/historial', [isAuth, isManager], getPedidos) //Endpoint para visualizar el historial de pedidos, solo accesible para el manager a traves de middlewares
 
 module.exports = router

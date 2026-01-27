@@ -11,14 +11,14 @@ const path = require('path')
  * @throws {Error} Rechaza la promesa si hay un error en la lectura o la ruta del archivo.
  */
 const leerCSV = (filename) => {
-    return new Promise((resolve, reject) => {
-        const resultados = []
-        const ruta = path.join(__dirname, '../data', filename)
-        fs.createReadStream(ruta)
-            .pipe(csv())
-            .on('data', (data) => resultados.push(data))
-            .on('end', () => resolve(resultados))
-            .on('error', (error) => reject(error))
+    return new Promise((resolve, reject) => { //Envolvemos en una promesa
+        const resultados = [] //Array vacio para guardar la informacion
+        const ruta = path.join(__dirname, '../data', filename) //Creamos la ruta absoluta del archivo
+        fs.createReadStream(ruta) //Node va leyendo el archivo poco a poco
+            .pipe(csv()) //Transforma el texto bruto en objetos
+            .on('data', (data) => resultados.push(data)) //Cuando el parser termina de leer una linea, nos devuelve data que pusheamos a resultados
+            .on('end', () => resolve(resultados)) //Cuando el evento ha terminado, entregamos el array lleno
+            .on('error', (error) => reject(error)) //Cualquier error
     })
 }
 

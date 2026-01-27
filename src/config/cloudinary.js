@@ -1,6 +1,6 @@
-const dotenv = require('dotenv')
-dotenv.config()
-const cloudinary = require('cloudinary').v2
+const dotenv = require('dotenv') // Carga de variables de entorno
+dotenv.config() // Traductor que lee las variables y las carga en process.env
+const cloudinary = require('cloudinary').v2 // Inmportamos cloudinaryv2
 
 /**
  * Configura la conexión con la API de Cloudinary.
@@ -9,14 +9,14 @@ const cloudinary = require('cloudinary').v2
  */
 const connectCloudinary = () => {
     try {
-        cloudinary.config({
+        cloudinary.config({ //Le pasamos las credenciales necesarias para saber donde subir las fotos
             cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
             api_key: process.env.CLOUDINARY_API_KEY,
             api_secret: process.env.CLOUDINARY_API_SECRET
         })
-        console.log('Conectado con éxito a Cloudinary');
+        console.log('Conectado con éxito a Cloudinary');//Confirmacion de que todo va bien
     } catch (error) {
-        console.log('Error al conectar a Cloudinary', error);      
+        console.log('Error al conectar a Cloudinary', error); //Mostramos error 
     }
 }
 

@@ -17,23 +17,23 @@ const {deleteImgCloudinary} = require('../utils/cloudinary.utils')
  */
 const registerUser = async (req, res) => {
     try {
-        const user = new User(req.body)
-        const userExist = await User.findOne({email: user.email})
+        const user = new User(req.body) //Creamos instancia del modelo recibido 
+        const userExist = await User.findOne({email: user.email}) //Comprobacion manual de duplicados
         if (userExist) {
-            if (req.file) {
-                deleteImgCloudinary(req.file.path)
+            if (req.file) { //Si existe, borramos la foto que haya subido
+                deleteImgCloudinary(req.file.path) 
             }
             return res.status(400).json("El usuario ya existe")
         }
-        if (req.file) {
+        if (req.file) {  //Gestion de la imagen subida por multer
             user.img = req.file.path
         }
-        const userDB = await user.save()
-        userDB.password = null
+        const userDB = await user.save() //Aqui salta el pre-save
+        userDB.password = null //Escondemos la contraseña para no mostrarla, en la BBDD seguiria cifrada
         res.status(201).json(userDB)
     } catch (error) {
         if (req.file) {
-                deleteImgCloudinary(req.file.path)
+                deleteImgCloudinary(req.file.path) //Si hay algun error borramos posible rastro de una imagen subida
             }
         res.status(400).json({error: "Error al registrar al usuario", detalle: error.message})
     }
@@ -51,16 +51,16 @@ const registerUser = async (req, res) => {
 const loginUser = async (req,res) => {
     try {
         const { email, password} = req.body
-        const user = await User.findOne({email})
+        const user = await User.findOne({email}) //Busca el usuario por email
         if (!user) {
-            return res.status(400).json("Contraseña o usuario incorrecto")
+            return res.status(400).json("Contraseña o usuario incorrecto") //Por seguridad no decimos si lo que falla es el email o la password
         }
-        const validPassword = await bcrypt.compare(password, user.password)
+        const validPassword = await bcrypt.compare(password, user.password) //Compara la contraseña en texto plano con la encriptada
         if(!validPassword) {
-            return res.status(400).json("Contraseña o usuario incorrecto")
+            return res.status(400).json("Contraseña o usuario incorrecto") //Gestion de errores
         }
-        const token = generateToken(user.id, user.email)
-        user.password = null
+        const token = generateToken(user.id, user.email) //Genera el token para auth diferentes peticiones
+        user.password = null //Escondemos la contraseña
         return res.status(200).json({token, user})
     } catch (error) {
         return res.status(400).json("Error al login")

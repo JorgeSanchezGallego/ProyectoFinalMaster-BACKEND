@@ -14,18 +14,18 @@ const {verifyToken} = require('../utils/token')
  */
 const isAuth = async(req, res, next) => {
     try {
-        const authorization = req.headers.authorization
-        if (!authorization) {
+        const authorization = req.headers.authorization //Guardamos el Bearer Token sin limpiar
+        if (!authorization) { //Si no existe, error
             return res.status(401).json("No autorizado")
         }
-        const token = authorization.split(" ")[1]
-        const { id } = verifyToken(token)
-        const user = await User.findById(id)
-        if (!user) {
+        const token = authorization.split(" ")[1] //Nos quedamos con la parte que queremos que es el código
+        const { id } = verifyToken(token) //Recuperamos el payload y rescatamos el ID
+        const user = await User.findById(id) //Buscamos al usuario por ID
+        if (!user) { 
             return res.status(401).json("Token o usuario invalidos")
         }
-        req.user = user
-        next()
+        req.user = user //Metemos al usuario dentro del req.user
+        next() //Todo bien, siguiente paso
     } catch (error) {
         return res.status(401).json("Token invalido o sesión expirada")
     }
@@ -42,8 +42,8 @@ const isAuth = async(req, res, next) => {
  */
 const isManager = async (req, res, next) => {
     try {
-        if (req.user && req.user.role === "encargado") {
-            return next()
+        if (req.user && req.user.role === "encargado") { //Si req.user existe y req.user.role es encargado, puedes pasar
+            return next()  //Vamos al siguiente paso
         } else {
             return res.status(403).json("Acceso denegado")
         }
@@ -63,8 +63,8 @@ const isManager = async (req, res, next) => {
  */
 const isSupplier = async (req, res, next) => {
     try {
-        if (req.user && req.user.role === "comercial") {
-            return next()
+        if (req.user && req.user.role === "comercial") { //Si req.user existe y req.user.role es igual a comercial, puedes pasar
+            return next() //Pasamos al siguiente
         } else {
             return res.status(403).json("Acceso denegado")
         }

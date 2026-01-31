@@ -17,7 +17,7 @@ const router = express.Router() //Nos traemos el enrutador
  * @route {POST} /pedido
  * @authentication Requiere isAuth e isManager.
  */
-router.post('/pedido', [isAuth, isManager], createPedido) //Endpoint para realizar un pedido, solo accesible para el manager a traves de middlewares
+router.post('/', [isAuth, isManager], createPedido) //Endpoint para realizar un pedido, solo accesible para el manager a traves de middlewares
 /**
  * Ruta para obtener el historial de pedidos del usuario.
  * Requiere un token válido y rol de 'encargado'.
